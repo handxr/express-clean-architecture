@@ -1,6 +1,10 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import { LRUCache } from "lru-cache";
 import { setRoutes } from "./routes";
+import {
+  INVALIDATE_CACHE_METHODS,
+  InvalidateCacheMethod,
+} from "./utils/constants";
 
 class App {
   public app: Application;
@@ -20,6 +24,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(this.cacheMiddleware.bind(this));
+    this.app.use(this.invalidateCacheMiddleware.bind(this));
   }
 
   private routes(): void {
@@ -51,6 +56,21 @@ class App {
       };
       next();
     }
+  }
+
+  private invalidateCacheMiddleware(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): void {
+    const key = request.originalUrl;
+    const method = request.method;
+
+    if (INVALIDATE_CACHE_METHODS.includes(method as InvalidateCacheMethod)) {
+      this.cache.delete(key);
+    }
+
+    next();
   }
 }
 
