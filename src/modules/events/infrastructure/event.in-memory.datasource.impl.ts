@@ -94,21 +94,12 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
 
     if (!event) throw new Error(`Event with id ${updateEventDto.id} not found`);
 
-    const updatedEvent = new EventEntity(
-      updateEventDto.id,
-      updateEventDto.name || event.name,
-      updateEventDto.description || event.description,
-      updateEventDto.date || event.date,
-      updateEventDto.location || event.location,
-      updateEventDto.creatorId || event.creatorId,
-      new Date()
-    );
+    event.name = updateEventDto.name ?? event.name;
+    event.description = updateEventDto.description ?? event.description;
+    event.date = updateEventDto.date ?? event.date;
+    event.location = updateEventDto.location ?? event.location;
+    event.creatorId = updateEventDto.creatorId ?? event.creatorId;
 
-    const index = this.events.findIndex(
-      (event) => event.id === updatedEvent.id
-    );
-    this.events[index] = updatedEvent;
-
-    return EventEntity.fromObject(updatedEvent);
+    return EventEntity.fromObject(event);
   }
 }
