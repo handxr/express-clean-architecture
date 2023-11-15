@@ -6,8 +6,14 @@ import { GetEvent } from "../../domain/use-cases/get-event";
 import { CreateEventDto } from "../../domain/dtos/create-event.dto";
 import { CreateEvent } from "../../domain/use-cases/create-event";
 
+import { CacheService } from "../services/cache.service";
+
 export class EventController {
-  constructor(private readonly eventRepository: EventRepository) {}
+  private cacheService: CacheService;
+
+  constructor(private readonly eventRepository: EventRepository) {
+    this.cacheService = new CacheService();
+  }
 
   private handleError(error: unknown, response: Response) {
     if (error instanceof CustomError) {
@@ -19,27 +25,44 @@ export class EventController {
   }
 
   public getEvents(request: Request, response: Response) {
-    new GetEvents(this.eventRepository)
-      .execute()
-      .then((events) => {
-        response.status(200).json(events);
-      })
-      .catch((error) => {
-        this.handleError(error, response);
-      });
+    const cachedEvents = this.cacheService.get("events");
+
+    if (cachedEvents) {
+      console.log("cached events");
+      response.status(200).json(cachedEvents);
+    } else {
+      new GetEvents(this.eventRepository)
+        .execute()
+        .then((events) => {
+          console.log("saving events in cache");
+          this.cacheService.set("events", events);
+          response.status(200).json(events);
+        })
+        .catch((error) => {
+          this.handleError(error, response);
+        });
+    }
   }
 
   public getEvent(request: Request, response: Response) {
     const { eventId } = request.params;
+    const cachedEvent = this.cacheService.get(`event:${eventId}`);
 
-    new GetEvent(this.eventRepository)
-      .execute(eventId)
-      .then((event) => {
-        return response.json(event);
-      })
-      .catch((error) => {
-        this.handleError(error, response);
-      });
+    if (cachedEvent) {
+      console.log("cached event");
+      response.json(cachedEvent);
+    } else {
+      new GetEvent(this.eventRepository)
+        .execute(eventId)
+        .then((event) => {
+          console.log("saving event in cache");
+          this.cacheService.set(`event:${eventId}`, event);
+          return response.json(event);
+        })
+        .catch((error) => {
+          this.handleError(error, response);
+        });
+    }
   }
 
   public createEvent(request: Request, response: Response) {
@@ -52,6 +75,8 @@ export class EventController {
     new CreateEvent(this.eventRepository)
       .execute(createEventDto!)
       .then((event) => {
+        console.log("invalidating cache");
+        this.cacheService.del("events");
         return response.status(201).json(event);
       })
       .catch((error) => {
@@ -65,6 +90,9 @@ export class EventController {
     this.eventRepository
       .deleteEvent(eventId)
       .then(() => {
+        console.log("invalidating cache");
+        this.cacheService.del("events");
+        this.cacheService.del(`event:${eventId}`);
         return response.status(204).send();
       })
       .catch((error) => {
