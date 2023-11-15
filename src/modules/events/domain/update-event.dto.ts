@@ -43,6 +43,8 @@ export class UpdateEventDto {
     const errors: string[] = [];
     const { id, name, description, date, location, creatorId } = object;
 
+    let newDate: Date | undefined = undefined;
+
     if (!id) errors.push("id is missing");
     if (!name && !description && !date && !location && !creatorId) {
       errors.push("no values to update");
@@ -54,6 +56,14 @@ export class UpdateEventDto {
       errors.push("location must be a string");
     if (creatorId && typeof creatorId !== "string")
       errors.push("creatorId must be a string");
+    if (date && typeof date !== "string") {
+      errors.push("date must be a string");
+    }
+    if (date && typeof date === "string") {
+      newDate = new Date(date);
+      if (Number.isNaN(newDate.getTime()))
+        errors.push("date must be a valid date");
+    }
 
     const eventDto =
       errors.length === 0
@@ -61,7 +71,7 @@ export class UpdateEventDto {
             id as string,
             name as string,
             description as string,
-            new Date(date as string),
+            newDate as Date,
             location as string,
             creatorId as string
           )
