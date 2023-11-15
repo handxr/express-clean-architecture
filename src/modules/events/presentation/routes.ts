@@ -15,6 +15,7 @@ export class EventRoutes {
     router.get("/", eventController.getEvents.bind(eventController));
     router.post("/", eventController.createEvent.bind(eventController));
     router.get("/:eventId", eventController.getEvent.bind(eventController));
+    router.put("/:eventId", eventController.updateEvent.bind(eventController));
     router.delete(
       "/:eventId",
       eventController.deleteEvent.bind(eventController)

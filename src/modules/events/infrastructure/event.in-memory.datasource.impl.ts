@@ -1,5 +1,6 @@
-import uuid4 from "uuid4";
 import { CreateEventDto, EventDatasource, EventEntity } from "../domain";
+import { UpdateEventDto } from "../domain/update-event.dto";
+import { UuidAdapter } from "../../../core/infrastructure/uuid.adapter";
 
 export class EventInMemoryDatasourceImpl implements EventDatasource {
   private readonly events: EventEntity[] = [];
@@ -10,7 +11,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
 
   private createEventsSeed(): void {
     const event1 = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       "Event 1",
       "Event 1 description",
       new Date("2021-10-10"),
@@ -19,7 +20,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
       new Date()
     );
     const event2 = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       "Event 2",
       "Event 2 description",
       new Date("2021-10-11"),
@@ -28,7 +29,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
       new Date()
     );
     const event3 = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       "Event 3",
       "Event 3 description",
       new Date("2021-10-12"),
@@ -37,7 +38,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
       new Date()
     );
     const event4 = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       "Event 4",
       "Event 4 description",
       new Date("2021-10-13"),
@@ -46,7 +47,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
       new Date()
     );
     const event5 = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       "Event 5",
       "Event 5 description",
       new Date("2021-10-14"),
@@ -61,7 +62,7 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
     createEventDto: CreateEventDto
   ): Promise<EventEntity> {
     const event = new EventEntity(
-      uuid4(),
+      UuidAdapter.generate(),
       createEventDto.name,
       createEventDto.description,
       createEventDto.date,
@@ -80,10 +81,34 @@ export class EventInMemoryDatasourceImpl implements EventDatasource {
     return EventEntity.fromObject(event);
   }
   public async getEvents(): Promise<EventEntity[]> {
-    return this.events.map(EventEntity.fromObject);
+    return this.events.map((event) => EventEntity.fromObject(event));
   }
   public async deleteEvent(eventId: string): Promise<void> {
     const index = this.events.findIndex((event) => event.id === eventId);
     this.events.splice(index, 1);
+  }
+  public async updateEvent(
+    updateEventDto: UpdateEventDto
+  ): Promise<EventEntity> {
+    const event = this.events.find((event) => event.id === updateEventDto.id);
+
+    if (!event) throw new Error(`Event with id ${updateEventDto.id} not found`);
+
+    const updatedEvent = new EventEntity(
+      updateEventDto.id,
+      updateEventDto.name || event.name,
+      updateEventDto.description || event.description,
+      updateEventDto.date || event.date,
+      updateEventDto.location || event.location,
+      updateEventDto.creatorId || event.creatorId,
+      new Date()
+    );
+
+    const index = this.events.findIndex(
+      (event) => event.id === updatedEvent.id
+    );
+    this.events[index] = updatedEvent;
+
+    return EventEntity.fromObject(updatedEvent);
   }
 }

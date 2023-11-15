@@ -2,6 +2,7 @@ import { EventDatasource } from "../domain/event.datasource";
 import { CreateEventDto } from "../domain/create-event.dto";
 import { EventEntity } from "../domain/event.entity";
 import { EventRepository } from "../domain/event.repository";
+import { UpdateEventDto } from "../domain/update-event.dto";
 
 export class EventRepositoryImpl implements EventRepository {
   constructor(private readonly datasource: EventDatasource) {}
@@ -16,5 +17,9 @@ export class EventRepositoryImpl implements EventRepository {
   }
   deleteEvent(eventId: string): Promise<void> {
     return this.datasource.deleteEvent(eventId);
+  }
+
+  updateEvent(updateEventDto: UpdateEventDto): Promise<EventEntity> {
+    return this.datasource.updateEvent(updateEventDto);
   }
 }

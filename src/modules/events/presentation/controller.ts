@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { CreateEventDto, EventRepository } from "../domain";
 import { CustomError } from "../../../core/domain/errors/custom.error";
 import { CreateEvent, DeleteEvent, GetEvent, GetEvents } from "../application";
+import { UpdateEvent } from "../application/update-event";
+import { UpdateEventDto } from "../domain/update-event.dto";
 
 export class EventController {
   private cacheService: CacheService;
@@ -74,6 +76,29 @@ export class EventController {
         console.log("invalidating cache");
         this.cacheService.del("events");
         return response.status(201).json(event);
+      })
+      .catch((error) => {
+        this.handleError(error, response);
+      });
+  }
+
+  public updateEvent(request: Request, response: Response) {
+    const [error, updateEventDto] = UpdateEventDto.create({
+      id: request.params.eventId,
+      ...request.body,
+    });
+
+    if (error.length > 0) {
+      return response.status(400).json({ message: error });
+    }
+
+    new UpdateEvent(this.eventRepository)
+      .execute(updateEventDto!)
+      .then((event) => {
+        console.log("invalidating cache");
+        this.cacheService.del("events");
+        this.cacheService.del(`event:${event.id}`);
+        return response.status(200).json(event);
       })
       .catch((error) => {
         this.handleError(error, response);
