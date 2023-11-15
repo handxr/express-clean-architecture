@@ -1,4 +1,4 @@
-import { App } from "./presentation/server";
+import { App } from "./core/presentation/server";
 
 function main() {
   new App().startServer();

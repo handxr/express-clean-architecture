@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { EventInMemoryDatasourceImpl } from "../../infrastructure/datasources/event.in-memory.datasource.impl";
-import { EventRepositoryImpl } from "../../infrastructure/repository/event.repository.impl";
+import {
+  EventInMemoryDatasourceImpl,
+  EventRepositoryImpl,
+} from "../infrastructure";
 import { EventController } from "./controller";
 
 export class EventRoutes {

@@ -1,7 +1,7 @@
-import { CreateEventDto } from "../dtos/create-event.dto";
-import { EventEntity } from "../entities/event.entity";
+import { CreateEventDto } from "./create-event.dto";
+import { EventEntity } from "./event.entity";
 
-export abstract class EventDatasource {
+export abstract class EventRepository {
   abstract createEvent(createEventDto: CreateEventDto): Promise<EventEntity>;
   abstract getEvent(eventId: string): Promise<EventEntity>;
   abstract getEvents(): Promise<EventEntity[]>;

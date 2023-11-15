@@ -1,10 +1,10 @@
-import { EventRepository } from "../repository/event.repository";
+import { EventRepository } from "../domain/event.repository";
 
 interface DeleteEventUseCase {
   execute(eventId: string): Promise<void>;
 }
 
-export class GetEvent implements DeleteEventUseCase {
+export class DeleteEvent implements DeleteEventUseCase {
   constructor(private readonly repository: EventRepository) {}
 
   async execute(eventId: string): Promise<void> {

@@ -1,5 +1,4 @@
 import express, { Application } from "express";
-import { LRUCache } from "lru-cache";
 
 import { AppRoutes } from "./routes";
 import { PORT } from "../config/constants";

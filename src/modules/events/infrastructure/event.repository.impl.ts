@@ -1,7 +1,7 @@
-import { EventDatasource } from "../../domain/datasources/event.datasource";
-import { CreateEventDto } from "../../domain/dtos/create-event.dto";
-import { EventEntity } from "../../domain/entities/event.entity";
-import { EventRepository } from "../../domain/repository/event.repository";
+import { EventDatasource } from "../domain/event.datasource";
+import { CreateEventDto } from "../domain/create-event.dto";
+import { EventEntity } from "../domain/event.entity";
+import { EventRepository } from "../domain/event.repository";
 
 export class EventRepositoryImpl implements EventRepository {
   constructor(private readonly datasource: EventDatasource) {}

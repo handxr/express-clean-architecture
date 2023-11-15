@@ -1,12 +1,8 @@
+import { CacheService } from "../../../core/infrastructure/cache.service";
 import { Request, Response } from "express";
-import { EventRepository } from "../../domain/repository/event.repository";
-import { GetEvents } from "../../domain/use-cases/get-events";
-import { CustomError } from "../../domain/errors/custom.error";
-import { GetEvent } from "../../domain/use-cases/get-event";
-import { CreateEventDto } from "../../domain/dtos/create-event.dto";
-import { CreateEvent } from "../../domain/use-cases/create-event";
-
-import { CacheService } from "../services/cache.service";
+import { CreateEventDto, EventRepository } from "../domain";
+import { CustomError } from "../../../core/domain/errors/custom.error";
+import { CreateEvent, DeleteEvent, GetEvent, GetEvents } from "../application";
 
 export class EventController {
   private cacheService: CacheService;
@@ -87,8 +83,8 @@ export class EventController {
   public deleteEvent(request: Request, response: Response) {
     const { eventId } = request.params;
 
-    this.eventRepository
-      .deleteEvent(eventId)
+    new DeleteEvent(this.eventRepository)
+      .execute(eventId)
       .then(() => {
         console.log("invalidating cache");
         this.cacheService.del("events");

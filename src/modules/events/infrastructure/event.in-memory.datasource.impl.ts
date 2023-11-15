@@ -1,7 +1,5 @@
 import uuid4 from "uuid4";
-import { EventDatasource } from "../../domain/datasources/event.datasource";
-import { CreateEventDto } from "../../domain/dtos/create-event.dto";
-import { EventEntity } from "../../domain/entities/event.entity";
+import { CreateEventDto, EventDatasource, EventEntity } from "../domain";
 
 export class EventInMemoryDatasourceImpl implements EventDatasource {
   private readonly events: EventEntity[] = [];

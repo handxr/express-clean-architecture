@@ -1,6 +1,5 @@
+import { EventRoutes } from "../../modules/events";
 import { Router } from "express";
-
-import { EventRoutes } from "./events/routes";
 
 export class AppRoutes {
   public static get routes(): Router {

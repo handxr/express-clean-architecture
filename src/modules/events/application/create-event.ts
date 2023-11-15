@@ -1,6 +1,6 @@
-import { CreateEventDto } from "../dtos/create-event.dto";
-import { EventEntity } from "../entities/event.entity";
-import { EventRepository } from "../repository/event.repository";
+import { CreateEventDto } from "../domain/create-event.dto";
+import { EventEntity } from "../domain/event.entity";
+import { EventRepository } from "../domain/event.repository";
 
 interface CreateEventUseCase {
   execute(createEventDto: CreateEventDto): Promise<EventEntity>;
