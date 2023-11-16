@@ -2,8 +2,13 @@ import { CacheService } from "../../../core/infrastructure/cache.service";
 import { Request, Response } from "express";
 import { CreateEventDto, EventRepository } from "../domain";
 import { CustomError } from "../../../core/domain/errors/custom.error";
-import { CreateEvent, DeleteEvent, GetEvent, GetEvents } from "../application";
-import { UpdateEvent } from "../application/update-event";
+import {
+  CreateEvent,
+  DeleteEvent,
+  GetEvent,
+  GetEvents,
+} from "../domain/use-cases";
+import { UpdateEvent } from "../domain/use-cases/update-event";
 import { UpdateEventDto } from "../domain/update-event.dto";
 
 export class EventController {

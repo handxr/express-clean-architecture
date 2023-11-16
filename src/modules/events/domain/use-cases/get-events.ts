@@ -1,5 +1,5 @@
-import { EventEntity } from "../domain/event.entity";
-import { EventRepository } from "../domain/event.repository";
+import { EventEntity } from "../event.entity";
+import { EventRepository } from "../event.repository";
 
 interface GetEventsUseCase {
   execute(): Promise<EventEntity[]>;
