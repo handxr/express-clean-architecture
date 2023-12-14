@@ -1,4 +1,5 @@
 import express, { Application, Router } from "express";
+import compression from "compression";
 import { EventRoutes } from "./modules/events";
 
 import { PORT } from "./config/constants";
@@ -19,6 +20,7 @@ export class App {
   }
 
   private config(): void {
+    this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(this.router);
