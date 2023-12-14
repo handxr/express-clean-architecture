@@ -1,6 +1,6 @@
 import { CreateEventDto, EventDatasource, EventEntity } from "../../domain";
 import { UpdateEventDto } from "../../domain/update-event.dto";
-import { UuidAdapter } from "../../../shared/infrastructure/uuid.adapter";
+import { UuidAdapter } from "../../../shared/infrastructure/adapters/uuid.adapter";
 
 export class EventInMemoryDatasourceImpl implements EventDatasource {
   private readonly events: EventEntity[] = [];
