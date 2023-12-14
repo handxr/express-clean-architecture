@@ -3,4 +3,3 @@ export * from "./event.datasource";
 export * from "./event.entity";
 export * from "./event.repository";
 export * from "./update-event.dto";
-export * from "./use-cases";

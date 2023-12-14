@@ -1,6 +1,8 @@
 import { LRUCache } from "lru-cache";
+import { ICacheService } from "../domain/interfaces/cache-service";
 
-export class CacheService {
+export class CacheService implements ICacheService {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private cache: LRUCache<string, any>;
 
   constructor() {

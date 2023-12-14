@@ -1,16 +1,9 @@
 import { Router } from "express";
-import {
-  EventInMemoryDatasourceImpl,
-  EventRepositoryImpl,
-} from "../infrastructure";
-import { EventController } from "./controller";
+import { eventController } from "../dependencies";
 
 export class EventRoutes {
   public static get routes(): Router {
     const router = Router();
-    const datasource = new EventInMemoryDatasourceImpl();
-    const eventRepository = new EventRepositoryImpl(datasource);
-    const eventController = new EventController(eventRepository);
 
     router.get("/", eventController.getEvents.bind(eventController));
     router.post("/", eventController.createEvent.bind(eventController));

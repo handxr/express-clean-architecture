@@ -1,22 +1,21 @@
-import { CacheService } from "../../../core/infrastructure/cache.service";
 import { Request, Response } from "express";
-import { CreateEventDto, EventRepository } from "../domain";
-import { CustomError } from "../../../core/domain/errors/custom.error";
+import { CreateEventDto, EventRepository } from "../../domain";
+import { CustomError } from "../../../shared/domain/errors/custom.error";
 import {
   CreateEvent,
   DeleteEvent,
   GetEvent,
   GetEvents,
-} from "../domain/use-cases";
-import { UpdateEvent } from "../domain/use-cases/update-event";
-import { UpdateEventDto } from "../domain/update-event.dto";
+} from "../../application/use-cases";
+import { UpdateEvent } from "../../application/use-cases/update-event";
+import { UpdateEventDto } from "../../domain/update-event.dto";
+import { ICacheService } from "../../../shared/domain/interfaces/cache-service";
 
 export class EventController {
-  private cacheService: CacheService;
-
-  constructor(private readonly eventRepository: EventRepository) {
-    this.cacheService = new CacheService();
-  }
+  constructor(
+    private readonly eventRepository: EventRepository,
+    private readonly cacheService: ICacheService
+  ) {}
 
   private handleError(error: unknown, response: Response) {
     if (error instanceof CustomError) {

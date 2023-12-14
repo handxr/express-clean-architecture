@@ -1,2 +1,2 @@
-export * from "./event.in-memory.datasource.impl";
-export * from "./event.repository.impl";
+export * from "./framework";
+export * from "./repositories";

@@ -1,14 +1,16 @@
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
+import { EventRoutes } from "./modules/events";
 
-import { AppRoutes } from "./routes";
-import { PORT } from "../config/constants";
+import { PORT } from "./config/constants";
 
 export class App {
   public readonly app: Application;
   public readonly port: number;
+  public readonly router: Router;
 
   constructor() {
     this.app = express();
+    this.router = Router();
     this.port = PORT;
 
     this.config();
@@ -19,10 +21,11 @@ export class App {
   private config(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
+    this.app.use(this.router);
   }
 
   private routes(): void {
-    this.app.use(AppRoutes.routes);
+    this.router.use("/api/v1/events", EventRoutes.routes);
   }
 
   private listen(): void {
