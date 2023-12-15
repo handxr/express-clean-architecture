@@ -1,4 +1,4 @@
-import { CacheService } from "../../../shared/infrastructure/services/cache.service";
+import { CacheService } from "../../shared/infrastructure/services/cache.service";
 import { EventController } from "./controller";
 import { EventInMemoryDatasourceImpl } from "./event.in-memory.datasource.impl";
 
