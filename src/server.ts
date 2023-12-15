@@ -1,6 +1,6 @@
 import express, { Application, Router } from "express";
 import compression from "compression";
-import { EventRoutes } from "./modules/events";
+import { EventRoutes } from "./features/events";
 
 import { PORT } from "./config/constants";
 

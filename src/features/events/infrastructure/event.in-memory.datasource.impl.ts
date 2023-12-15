@@ -1,8 +1,8 @@
-import { CreateEventDto, EventDatasource, EventEntity } from "../../domain";
-import { UpdateEventDto } from "../../domain/update-event.dto";
+import { CreateEventDto, EventEntity, EventRepository } from "../domain";
+import { UpdateEventDto } from "../domain/update-event.dto";
 import { UuidAdapter } from "../../../shared/infrastructure/adapters/uuid.adapter";
 
-export class EventInMemoryDatasourceImpl implements EventDatasource {
+export class EventInMemoryDatasourceImpl implements EventRepository {
   private readonly events: EventEntity[] = [];
 
   constructor() {

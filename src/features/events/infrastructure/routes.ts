@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { eventController } from "../dependencies";
+import { eventController } from "./dependencies";
 
 export class EventRoutes {
   public static get routes(): Router {

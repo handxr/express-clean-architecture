@@ -1,4 +1,4 @@
-import { EventRepository } from "../../domain/event.repository";
+import { EventRepository } from "../domain/event.repository";
 
 interface DeleteEventUseCase {
   execute(eventId: string): Promise<void>;

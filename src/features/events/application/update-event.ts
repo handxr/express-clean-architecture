@@ -1,5 +1,5 @@
-import { EventEntity, EventRepository } from "../../domain";
-import { UpdateEventDto } from "../../domain/update-event.dto";
+import { EventEntity, EventRepository } from "../domain";
+import { UpdateEventDto } from "../domain/update-event.dto";
 
 interface UpdateEventUseCase {
   execute(updateEventDto: UpdateEventDto): Promise<EventEntity>;
